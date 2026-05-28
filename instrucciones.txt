@@ -1,0 +1,368 @@
+implementa a la pagina de estructura del proyecto que tiene la ruta /tecnico/estructura
+el siguiente contenido
+````md id="z9t2fa"
+# Estructura del Proyecto
+
+## Descripción General
+
+El proyecto Onal&Nel implementa una arquitectura cliente-servidor dividida en dos aplicaciones principales:
+
+- **Backend:** API REST desarrollada con Node.js, Express y MySQL.
+- **Frontend:** Aplicación web desarrollada con React y Vite.
+
+La organización del proyecto está diseñada siguiendo una arquitectura modular y escalable, facilitando el mantenimiento, la reutilización de código y la separación de responsabilidades.
+
+---
+
+# Backend
+
+## Estructura General
+
+```txt
+src/
+├── app.js
+├── config/
+├── controllers/
+├── jobs/
+├── middleware/
+├── models/
+├── routes/
+├── services/
+├── test/
+├── utils/
+└── validators/
+````
+
+---
+
+# Explicación de Carpetas Backend
+
+## `config/`
+
+Contiene la configuración principal del servidor, conexión a base de datos y servicios globales del sistema.
+
+### Archivos principales
+
+| Archivo     | Descripción                                   |
+| ----------- | --------------------------------------------- |
+| `config.js` | Validación y carga de variables de entorno    |
+| `db.js`     | Configuración y conexión a MySQL              |
+| `server.js` | Inicialización del servidor HTTP y Socket.IO  |
+| `socket.js` | Configuración de eventos y acceso a Socket.IO |
+
+---
+
+## `controllers/`
+
+Gestionan las solicitudes HTTP recibidas por las rutas y coordinan la comunicación con los servicios.
+
+### Funcionalidades principales
+
+* Gestión de autenticación
+* CRUD de clientes
+* Gestión de ventas y pedidos
+* Facturación y pagos
+* Dashboard y estadísticas
+* Gestión de usuarios
+
+### Ejemplos de archivos
+
+| Archivo                   | Descripción                   |
+| ------------------------- | ----------------------------- |
+| `auth.controller.js`      | Login, refresh token y perfil |
+| `ventas.controller.js`    | Gestión de ventas             |
+| `pedidos.controller.js`   | Gestión de pedidos            |
+| `pagos.controller.js`     | Registro y control de pagos   |
+| `dashboard.controller.js` | KPIs y estadísticas           |
+
+---
+
+## `jobs/`
+
+Contiene tareas automatizadas ejecutadas mediante `node-cron`.
+
+### Archivo principal
+
+| Archivo          | Descripción                                         |
+| ---------------- | --------------------------------------------------- |
+| `alertas.job.js` | Verificación automática de pagos vencidos y alertas |
+
+---
+
+## `middleware/`
+
+Incluye middlewares personalizados para validación, autenticación y manejo global de errores.
+
+### Archivos principales
+
+| Archivo                   | Descripción                                  |
+| ------------------------- | -------------------------------------------- |
+| `auth.middleware.js`      | Validación JWT y control de roles            |
+| `err.middleware.js`       | Captura global de errores                    |
+| `validator.middleware.js` | Manejo de validaciones con express-validator |
+
+---
+
+## `models/`
+
+Encapsulan la lógica de acceso a datos y las consultas a la base de datos MySQL.
+
+### Funcionalidades principales
+
+* Consultas CRUD
+* Ejecución de procedimientos almacenados
+* Gestión de filtros y paginación
+* Control de inventario y pagos
+
+### Ejemplos de archivos
+
+| Archivo               | Descripción               |
+| --------------------- | ------------------------- |
+| `cliente.models.js`   | CRUD de clientes          |
+| `ventas.models.js`    | Gestión de ventas y pagos |
+| `pedido.models.js`    | Gestión de pedidos        |
+| `dashboard.models.js` | Consultas estadísticas    |
+| `factura.models.js`   | Facturación y PDF         |
+
+---
+
+## `routes/`
+
+Definen los endpoints disponibles en la API REST y enlazan las rutas con sus respectivos controladores.
+
+### Ejemplos de archivos
+
+| Archivo              | Descripción             |
+| -------------------- | ----------------------- |
+| `cliente.route.js`   | Endpoints de clientes   |
+| `ventas.route.js`    | Endpoints de ventas     |
+| `pagos.route.js`     | Endpoints de pagos      |
+| `dashboard.route.js` | Endpoints del dashboard |
+
+---
+
+## `services/`
+
+Implementan la lógica de negocio del sistema, separando las reglas funcionales de los controladores.
+
+### Funcionalidades principales
+
+* Procesamiento de ventas
+* Gestión de autenticación
+* Validaciones de negocio
+* Manejo de alertas
+* Estadísticas y reportes
+
+### Ejemplos de archivos
+
+| Archivo                | Descripción              |
+| ---------------------- | ------------------------ |
+| `auth.service.js`      | Lógica de autenticación  |
+| `ventas.service.js`    | Procesamiento de ventas  |
+| `pedidos.service.js`   | Gestión de pedidos       |
+| `dashboard.service.js` | Estadísticas del sistema |
+
+---
+
+## `test/`
+
+Contiene pruebas unitarias e integraciones utilizando Jest y Supertest.
+
+### Funcionalidades principales
+
+* Validación de endpoints
+* Verificación de autenticación
+* Cobertura de módulos principales
+
+---
+
+## `utils/`
+
+Incluye utilidades reutilizables utilizadas en distintos módulos del sistema.
+
+### Archivos principales
+
+| Archivo           | Descripción                      |
+| ----------------- | -------------------------------- |
+| `appError.js`     | Clase personalizada para errores |
+| `genId.js`        | Generación de identificadores    |
+| `pdfGenerator.js` | Generación de facturas PDF       |
+| `paginacion.js`   | Helpers de paginación            |
+
+---
+
+## `validators/`
+
+Contiene reglas de validación implementadas con `express-validator`.
+
+### Funcionalidades principales
+
+* Validación de clientes
+* Validación de ventas
+* Validación de pedidos
+* Validación de usuarios
+
+---
+
+# Frontend
+
+## Estructura General
+
+```txt
+src/
+├── api/
+├── assets/
+├── components/
+├── features/
+├── hooks/
+├── layout/
+├── page/
+├── routes/
+├── utils/
+├── App.jsx
+└── main.jsx
+```
+
+---
+
+# Explicación de Carpetas Frontend
+
+## `api/`
+
+Gestiona la comunicación con el backend mediante Axios.
+
+### Archivos principales
+
+| Archivo            | Descripción                                    |
+| ------------------ | ---------------------------------------------- |
+| `axiosInstance.js` | Configuración global de Axios e interceptores  |
+| `endpoints/`       | Funciones para consumo de endpoints por módulo |
+
+---
+
+## `assets/`
+
+Contiene recursos estáticos utilizados por la aplicación.
+
+### Contenido
+
+* Tipografías
+* Variables CSS
+* Estilos globales
+
+---
+
+## `components/`
+
+Incluye componentes reutilizables y elementos de interfaz gráfica.
+
+### Subcarpetas
+
+| Carpeta        | Descripción                                     |
+| -------------- | ----------------------------------------------- |
+| `common/`      | Componentes reutilizables como botones e inputs |
+| `ui/feedback/` | Alertas, loaders y mensajes                     |
+| `ui/Header/`   | Barra superior y navegación                     |
+| `ui/Sidebar/`  | Menú lateral dinámico según rol                 |
+
+---
+
+## `features/`
+
+Agrupa funcionalidades específicas del sistema organizadas por módulos.
+
+### Ejemplos
+
+| Carpeta    | Descripción           |
+| ---------- | --------------------- |
+| `auth/`    | Login y autenticación |
+| `pedidos/` | Gestión de pedidos    |
+
+---
+
+## `hooks/`
+
+Contiene hooks personalizados reutilizables.
+
+### Ejemplo
+
+| Archivo               | Descripción                                    |
+| --------------------- | ---------------------------------------------- |
+| `useDocumentTitle.js` | Actualiza dinámicamente el título de la página |
+
+---
+
+## `layout/`
+
+Define la estructura visual principal de la aplicación.
+
+### Ejemplo
+
+| Carpeta       | Descripción                           |
+| ------------- | ------------------------------------- |
+| `MainLayout/` | Layout principal con Header y Sidebar |
+
+---
+
+## `page/`
+
+Contiene las páginas principales del sistema.
+
+### Funcionalidades principales
+
+* Dashboard
+* Clientes
+* Ventas
+* Pedidos
+* Usuarios
+
+---
+
+## `routes/`
+
+Gestiona la navegación y protección de rutas del sistema.
+
+### Archivos principales
+
+| Archivo        | Descripción                       |
+| -------------- | --------------------------------- |
+| `AppRouter`    | Configuración general de rutas    |
+| `PrivateRoute` | Protección de rutas autenticadas  |
+| `AdminRoute`   | Restricción por rol administrador |
+
+---
+
+## `utils/`
+
+Incluye funciones auxiliares reutilizables.
+
+### Ejemplo
+
+| Archivo      | Descripción                             |
+| ------------ | --------------------------------------- |
+| `session.js` | Gestión de sesión y validación de roles |
+
+---
+
+# Arquitectura General
+
+El proyecto implementa una arquitectura basada en separación de responsabilidades:
+
+```txt
+Frontend React
+      ↓
+API REST Express
+      ↓
+Controllers
+      ↓
+Services
+      ↓
+Models
+      ↓
+MySQL
+```
+
+Esta estructura facilita la escalabilidad del sistema, el mantenimiento del código y la implementación de nuevas funcionalidades.
+
+```
+```

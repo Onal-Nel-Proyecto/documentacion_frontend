@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+:root {
+  --bg-main: #f7f8fa;
+  --bg-sidebar: #ffffff;
+  --bg-active: #eff6ff;
+  --color-primary: #2563eb;
+  --color-primary-light: #dbeafe;
+  --color-text: #1e293b;
+  --color-muted: #64748b;
+  --color-border: #e2e8f0;
+  --sidebar-w: 260px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg-main);
+  color: var(--color-text);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 { font-family: 'DM Serif Display', serif; }
+
+a, button { transition: all 0.18s ease; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 99px; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page-enter { animation: fadeUp 0.28s ease forwards; }
+
+pre {
+  font-family: 'JetBrains Mono', monospace;
+  background: #1e293b;
+  color: #e2e8f0;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  font-size: 0.82rem;
+  line-height: 1.75;
+}
+
+code {
+  font-family: 'JetBrains Mono', monospace;
+  background: #eff6ff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.83em;
+  color: #2563eb;
+}
