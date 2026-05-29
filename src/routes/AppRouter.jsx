@@ -7,7 +7,6 @@ import Introduccion from '../pages/tech/Introduccion'
 import Instalacion from '../pages/tech/Instalacion'
 import Estructura from '../pages/tech/Estructura'
 import WIP from '../components/WIP'
-import Inicio from '../pages/tech/Inicio'
 
 export default function AppRouter() {
   return (
