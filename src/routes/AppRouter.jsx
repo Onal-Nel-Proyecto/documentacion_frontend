@@ -6,6 +6,10 @@ import Inicio from '../pages/tech/Inicio'
 import Introduccion from '../pages/tech/Introduccion'
 import Instalacion from '../pages/tech/Instalacion'
 import Estructura from '../pages/tech/Estructura'
+import Diagramas from '../pages/tech/Diagramas'
+import DiagramaDetalle from '../pages/tech/DiagramaDetalle'
+import BaseDeDatos from '../pages/tech/BaseDeDatos'
+import Api from '../pages/tech/Api'
 import WIP from '../components/WIP'
 
 export default function AppRouter() {
@@ -31,9 +35,10 @@ export default function AppRouter() {
           <Route path="introduccion"  element={<Introduccion />} />
           <Route path="instalacion"   element={<Instalacion />} />
           <Route path="estructura"    element={<Estructura />} />
-          <Route path="diagramas"     element={<WIP title="Diagramas" />} />
-          <Route path="base-de-datos" element={<WIP title="Base de datos" />} />
-          <Route path="api"           element={<WIP title="API / Endpoints" />} />
+          <Route path="diagramas"              element={<Diagramas />} />
+          <Route path="diagramas/:diagrama"       element={<DiagramaDetalle />} />
+          <Route path="base-de-datos"         element={<BaseDeDatos />} />
+          <Route path="api" element={<Api />} />
         </Route>
 
         {/* Fallback */}
