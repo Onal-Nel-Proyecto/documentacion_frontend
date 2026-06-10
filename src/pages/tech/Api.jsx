@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect, useRef, useCallback } from 'react'
 import { TbAlertCircle, TbApi } from 'react-icons/tb'
-import apiRaw from '/DOC_ENDPOINTS.md?raw'
+import apiRaw from '/doc_endpoints.md?raw'
 import { parseApiDoc } from '../../services/apiParser'
 import ApiSearch from '../../components/ApiSearch'
 import EndpointCard from '../../components/EndpointCard'
