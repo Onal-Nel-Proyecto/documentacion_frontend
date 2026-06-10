@@ -18,7 +18,7 @@ const cards = [
     label: 'Manual Técnico',
     desc: 'Documentación técnica completa: instalación, arquitectura, base de datos y endpoints de la API.',
     color: 'indigo',
-    path: '/tecnico/introduccion',
+    path: '/tecnico/inicio',
     tags: ['Arquitectura', 'API', 'DB'],
   },
 ]
