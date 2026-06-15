@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState, useCallback, Fragment } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { TbArrowLeft, TbPhoto } from 'react-icons/tb'
 import { diagramaSlugs, introducciones } from './diagramasData'
@@ -21,6 +21,73 @@ function slugify(text) {
 /** Genera el texto de figura según la posición del módulo y la imagen */
 function generarFigura(moduleIndex, imageIndex) {
   return `Figura ${moduleIndex + 1}.${imageIndex + 1}`
+}
+
+/* ──────────────────────────────────────────────
+   Parseo de descripción (bold, listas, saltos de línea)
+   ────────────────────────────────────────────── */
+
+/**
+ * Renderiza inline bold con **texto**.
+ */
+function parseInline(text) {
+  if (!text) return null
+  const parts = text.split(/(\*\*[^*]+\*\*)/g)
+  return parts.map((part, i) => {
+    if (/^\*\*[^*]+\*\*$/.test(part)) {
+      return <strong key={i}>{part.slice(2, -2)}</strong>
+    }
+    return part
+  })
+}
+
+/**
+ * Renderiza la descripción con soporte para:
+ * - \n como salto de línea
+ * - **texto** como negrita
+ * - -- al inicio de línea como lista no ordenada
+ * - --1 al inicio de línea como lista ordenada
+ */
+function DiagramDescription({ text }) {
+  if (!text) return null
+  const lines = text.split('\n')
+
+  const blocks = []
+  let ulBuffer = []
+  let olBuffer = []
+
+  function flush() {
+    if (ulBuffer.length) {
+      blocks.push(<ul key={blocks.length} className="list-disc list-inside space-y-1">{ulBuffer}</ul>)
+      ulBuffer = []
+    }
+    if (olBuffer.length) {
+      blocks.push(<ol key={blocks.length} className="list-decimal list-inside space-y-1">{olBuffer}</ol>)
+      olBuffer = []
+    }
+  }
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i]
+
+    if (/^--1[\s]/.test(line)) {
+      flush()
+      olBuffer.push(<li key={`ol-${i}`}>{parseInline(line.slice(4))}</li>)
+    } else if (/^--[\s]/.test(line)) {
+      flush()
+      ulBuffer.push(<li key={`ul-${i}`}>{parseInline(line.slice(3))}</li>)
+    } else {
+      flush()
+      blocks.push(
+        <p key={blocks.length} className="text-sm text-slate-600 leading-relaxed">
+          {parseInline(line)}
+        </p>,
+      )
+    }
+  }
+  flush()
+
+  return <div className="space-y-1.5">{blocks}</div>
 }
 
 /* ──────────────────────────────────────────────
@@ -124,15 +191,20 @@ export default function DiagramaDetalle() {
     }
   }, [config, loadData])
 
+  /* ── Módulos ordenados alfabéticamente ── */
+  const sortedData = data && [...data].sort((a, b) =>
+    a.module.localeCompare(b.module, 'es', { sensitivity: 'base' }),
+  )
+
   /* ── Items del menú lateral (solo si hay más de un módulo) ── */
   const navItems =
-    data && data.length > 1
-      ? data.map((m) => ({ id: slugify(m.module), label: m.module }))
+    sortedData && sortedData.length > 1
+      ? sortedData.map((m) => ({ id: slugify(m.module), label: m.module }))
       : []
 
   /* ── Intersection Observer para resaltar sección activa ── */
   useEffect(() => {
-    if (!data || data.length <= 1) return
+    if (!sortedData || sortedData.length <= 1) return
 
     if (observerRef.current) observerRef.current.disconnect()
 
@@ -149,14 +221,14 @@ export default function DiagramaDetalle() {
       { rootMargin: '-90px 0px -70% 0px', threshold: 0 },
     )
 
-    data.forEach((m) => {
+    sortedData.forEach((m) => {
       const el = document.getElementById(`section-${slugify(m.module)}`)
       if (el) observer.observe(el)
     })
 
     observerRef.current = observer
     return () => observer.disconnect()
-  }, [data])
+  }, [sortedData])
 
   /* ── Scroll suave al hacer clic en el menú ── */
   const scrollTo = (id) => {
@@ -235,7 +307,7 @@ export default function DiagramaDetalle() {
             )}
 
             {/* Módulos */}
-            {data.map((modulo, mIdx) => (
+            {sortedData.map((modulo, mIdx) => (
               <section
                 key={modulo.module}
                 id={`section-${slugify(modulo.module)}`}
@@ -246,32 +318,32 @@ export default function DiagramaDetalle() {
                 </h2>
 
                 <div className="space-y-8">
-                  {modulo.images.map((img, iIdx) => {
-                    const figura = generarFigura(mIdx, iIdx)
-                    return (
-                      <div key={img.id || `${mIdx}-${iIdx}`}>
-                        <DiagramImage
-                          src={img.url}
-                          title={img.title}
-                          figura={figura}
-                          onClick={() => openLightbox(img.url, `${figura}${img.title ? ` — ${img.title}` : ''}`)}
-                        />
+                  {[...modulo.images]
+                    .sort((a, b) => (a.orden ?? Infinity) - (b.orden ?? Infinity))
+                    .map((img, iIdx) => {
+                      const figura = generarFigura(mIdx, iIdx)
+                      return (
+                        <div key={img.id || `${mIdx}-${iIdx}`}>
+                          <DiagramImage
+                            src={img.url}
+                            title={img.title}
+                            figura={figura}
+                            onClick={() => openLightbox(img.url, `${figura}${img.title ? ` — ${img.title}` : ''}`)}
+                          />
 
-                        {/* Texto de referencia debajo de la imagen */}
-                        <p className="text-xs text-slate-400 mt-2 text-center">
-                          {figura}
-                          {img.title ? ` — ${img.title}` : ''}
-                        </p>
-
-                        {/* Descripción (opcional, respeta saltos de línea) */}
-                        {img.description && (
-                          <p className="text-sm text-slate-600 mt-3 leading-relaxed whitespace-pre-line">
-                            {img.description}
+                          {/* Texto de referencia debajo de la imagen */}
+                          <p className="text-xs text-slate-400 mt-2 text-center">
+                            {figura}
+                            {img.title ? ` — ${img.title}` : ''}
                           </p>
-                        )}
-                      </div>
-                    )
-                  })}
+
+                          {/* Descripción con formato (bold, listas, saltos de línea) */}
+                          {img.description && (
+                            <DiagramDescription text={img.description} />
+                          )}
+                        </div>
+                      )
+                    })}
                 </div>
               </section>
             ))}

@@ -1,5 +1,5 @@
 import { useEffect, useCallback } from 'react'
-import { TbX } from 'react-icons/tb'
+import { TbExternalLink, TbX } from 'react-icons/tb'
 
 /**
  * Lightbox para visualizar imágenes a pantalla completa.
@@ -41,14 +41,27 @@ export default function ImageLightbox({ src, alt = '', onClose }) {
       onClick={onClose}
       onContextMenu={(e) => e.preventDefault()}
     >
-      {/* Botón cerrar */}
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 z-10 w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur flex items-center justify-center text-white/80 hover:text-white transition-all"
-        aria-label="Cerrar"
-      >
-        <TbX size={22} />
-      </button>
+      {/* Botones flotantes — agrupados con fondo para evitar que la imagen los oculte */}
+      <div className="absolute top-4 right-4 z-10 flex flex-col gap-2 bg-black/30 rounded-xl p-2 backdrop-blur-sm">
+        <button
+          onClick={onClose}
+          className="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur flex items-center justify-center text-white/80 hover:text-white transition-all"
+          aria-label="Cerrar"
+        >
+          <TbX size={22} />
+        </button>
+
+        <a
+          href={src}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="h-10 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur flex items-center gap-1.5 px-3 text-xs font-medium text-white/80 hover:text-white transition-all"
+          aria-label="Abrir imagen completa"
+        >
+          <TbExternalLink size={16} />
+          Abrir imagen
+        </a>
+      </div>
 
       {/* Contenedor de la imagen (sin interacción directa) */}
       <div

@@ -2,6 +2,10 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Landing from '../pages/Landing'
 import DocLayout from '../layouts/DocLayout'
 import PrimerosPasos from '../pages/user/PrimerosPasos'
+import Requerimientos from '../pages/user/Requerimientos'
+import Interfaz from '../pages/user/Interfaz'
+import InterfazModulo from '../pages/user/InterfazModulo'
+import SolucionProblemas from '../pages/user/SolucionProblemas'
 import Inicio from '../pages/tech/Inicio'
 import Introduccion from '../pages/tech/Introduccion'
 import Instalacion from '../pages/tech/Instalacion'
@@ -22,10 +26,11 @@ export default function AppRouter() {
         <Route path="/usuario" element={<DocLayout type="usuario" />}>
           <Route index element={<Navigate to="primeros-pasos" replace />} />
           <Route path="primeros-pasos" element={<PrimerosPasos />} />
-          <Route path="requerimientos"      element={<WIP title="Requerimientos" />} />
-          <Route path="interfaz"            element={<WIP title="Interfaz general" />} />
+          <Route path="requerimientos"      element={<Requerimientos />} />
+          <Route path="interfaz"                 element={<Interfaz />} />
+          <Route path="interfaz/:modulo"       element={<InterfazModulo />} />
           <Route path="flujo"               element={<WIP title="Flujo principal" />} />
-          <Route path="solucion-problemas"  element={<WIP title="Solución de problemas" />} />
+          <Route path="solucion-problemas"  element={<SolucionProblemas />} />
         </Route>
 
         {/* Tech Manual */}

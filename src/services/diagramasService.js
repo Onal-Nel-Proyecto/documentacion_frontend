@@ -20,10 +20,10 @@ function getBaseUrl() {
 
 /**
  * Valida que la respuesta tenga la forma esperada:
- * `Array<{ module: string, images: Array<{ id, title, url, description? }> }>`
+ * `Array<{ module: string, images: Array<{ id, title, url, description?, orden? }> }>`
  *
  * @param {unknown} data
- * @returns {data is Array<{ module: string; images: Array<{ id: string; title: string; url: string; description?: string }> }>}
+ * @returns {data is Array<{ module: string; images: Array<{ id: string; title: string; url: string; description?: string; orden?: number }> }>}
  */
 function isValidResponse(data) {
   if (!Array.isArray(data)) return false
@@ -37,7 +37,8 @@ function isValidResponse(data) {
           img &&
           typeof img.id === 'string' &&
           typeof img.title === 'string' &&
-          typeof img.url === 'string',
+          typeof img.url === 'string' &&
+          (img.orden == null || typeof img.orden === 'number'),
       ),
   )
 }
