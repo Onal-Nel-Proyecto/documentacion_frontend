@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom'
-import { HiX, HiArrowRight } from 'react-icons/hi'
+import { HiX, HiArrowRight, HiHome } from 'react-icons/hi'
 import { TbBooks, TbCode } from 'react-icons/tb'
 import { userNav, techNav } from '../routes/navConfig'
 
@@ -95,7 +95,7 @@ export default function Sidebar({ type, isOpen, onClose }) {
         </nav>
 
         {/* Switch Manual Button */}
-        <div className="p-4 border-t border-slate-100">
+        <div className="p-4 pb-2 border-t border-slate-100">
           <button
             onClick={() => { navigate(switchTarget); onClose?.() }}
             className="w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl
@@ -107,6 +107,19 @@ export default function Sidebar({ type, isOpen, onClose }) {
               <span>{switchLabel}</span>
             </div>
             <HiArrowRight size={14} className="opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 transition-transform" />
+          </button>
+        </div>
+
+        {/* Back to Home Button */}
+        <div className="px-4 pb-4">
+          <button
+            onClick={() => { navigate('/'); onClose?.() }}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg
+              text-slate-400 hover:text-slate-600 hover:bg-slate-50
+              text-xs font-medium transition-colors"
+          >
+            <HiHome size={14} />
+            <span>Volver al inicio</span>
           </button>
         </div>
       </aside>

@@ -1,9 +1,66 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState, useCallback, Fragment } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { TbArrowLeft, TbPhoto } from 'react-icons/tb'
 import { getUserModules } from '../../services/userImagesService'
 import { LoadingSkeleton, ErrorDisplay, EmptyState } from '../../components/LoadingStates'
 import ImageLightbox from '../../components/ImageLightbox'
+
+/* ──────────────────────────────────────────────
+   Parseo de descripción (bold, listas, saltos de línea)
+   ────────────────────────────────────────────── */
+
+function parseInline(text) {
+  if (!text) return null
+  const parts = text.split(/(\*\*[^*]+\*\*)/g)
+  return parts.map((part, i) => {
+    if (/^\*\*[^*]+\*\*$/.test(part)) {
+      return <strong key={i}>{part.slice(2, -2)}</strong>
+    }
+    return part
+  })
+}
+
+function Descripcion({ texto }) {
+  if (!texto) return null
+  const lines = texto.split('\n')
+
+  const blocks = []
+  let ulBuffer = []
+  let olBuffer = []
+
+  function flush() {
+    if (ulBuffer.length) {
+      blocks.push(<ul key={blocks.length} className="list-disc list-inside space-y-1">{ulBuffer}</ul>)
+      ulBuffer = []
+    }
+    if (olBuffer.length) {
+      blocks.push(<ol key={blocks.length} className="list-decimal list-inside space-y-1">{olBuffer}</ol>)
+      olBuffer = []
+    }
+  }
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i]
+
+    if (/^--1[\s]/.test(line)) {
+      flush()
+      olBuffer.push(<li key={`ol-${i}`}>{parseInline(line.slice(4))}</li>)
+    } else if (/^--[\s]/.test(line)) {
+      flush()
+      ulBuffer.push(<li key={`ul-${i}`}>{parseInline(line.slice(3))}</li>)
+    } else {
+      flush()
+      blocks.push(
+        <p key={blocks.length} className="text-sm text-slate-600 leading-relaxed">
+          {parseInline(line)}
+        </p>,
+      )
+    }
+  }
+  flush()
+
+  return <div className="space-y-1.5">{blocks}</div>
+}
 
 /* ──────────────────────────────────────────────
    Utilidades
@@ -171,15 +228,15 @@ export default function InterfazModulo() {
       {/* Vacío */}
       {!loading && !error && data && data.images.length === 0 && <EmptyState />}
 
-      {/* Imágenes — galería en grid */}
+      {/* Imágenes — galería full-width como en el manual técnico */}
       {!loading && !error && data && data.images.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="space-y-10">
           {[...data.images]
             .sort((a, b) => (a.orden ?? Infinity) - (b.orden ?? Infinity))
             .map((img, iIdx) => {
               const figura = `Figura ${iIdx + 1}`
               return (
-                <div key={img.id || iIdx} className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div key={img.id || iIdx}>
                   <ModuleImage
                     src={img.url}
                     title={img.title}
@@ -187,12 +244,18 @@ export default function InterfazModulo() {
                     onClick={() => openLightbox(img.url, `${figura}${img.title ? ` — ${img.title}` : ''}`)}
                   />
 
-                  <div className="px-3 pb-3 pt-1.5">
-                    <p className="text-xs text-slate-400 text-center">
-                      {figura}
-                      {img.title ? ` — ${img.title}` : ''}
-                    </p>
-                  </div>
+                  {/* Texto de referencia debajo de la imagen */}
+                  <p className="text-xs text-slate-400 mt-2 text-center">
+                    {figura}
+                    {img.title ? ` — ${img.title}` : ''}
+                  </p>
+
+                  {/* Descripción con formato (bold, listas, saltos de línea) */}
+                  {img.description && (
+                    <div className="mt-4">
+                      <Descripcion texto={img.description} />
+                    </div>
+                  )}
                 </div>
               )
             })}

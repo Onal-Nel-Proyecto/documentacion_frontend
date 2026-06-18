@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { TbBooks, TbCode, TbArrowRight } from 'react-icons/tb'
+import { TbBooks, TbCode, TbArrowRight, TbUsers } from 'react-icons/tb'
 import { HiSparkles } from 'react-icons/hi2'
 
 const cards = [
@@ -92,9 +92,44 @@ export default function Landing() {
           })}
         </div>
 
+        {/* Developers section */}
+        <div className="w-full max-w-2xl mt-16 page-enter">
+          <div className="flex items-center gap-2 mb-6">
+            <div className="w-8 h-8 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0">
+              <TbUsers className="text-slate-500" size={18} />
+            </div>
+            <h2 className="text-lg text-slate-800">Equipo de Desarrollo</h2>
+          </div>
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-slate-50 border-b border-slate-200">
+                  <th className="text-left px-5 py-3 text-xs font-semibold tracking-widest uppercase text-slate-400">Desarrollador</th>
+                  <th className="text-left px-5 py-3 text-xs font-semibold tracking-widest uppercase text-slate-400">Área empleada</th>
+                  <th className="text-left px-5 py-3 text-xs font-semibold tracking-widest uppercase text-slate-400">Rol</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {[
+                  ['Delio Rafael Villa Cantillo', 'Desarrollador Front-end', 'Product Owner'],
+                  ['Wilfrido Adarraga Lawson', 'Desarrollador Full-Stack', 'Scrum Master'],
+                  ['Javier David Mercado Oquendo', 'Desarrollador Front-end', 'Equipo de desarrollo'],
+                  ['Daniel Lafaurie', 'Desarrollador Back-end', 'Equipo de desarrollo'],
+                ].map(([name, area, role]) => (
+                  <tr key={name} className="hover:bg-slate-50">
+                    <td className="px-5 py-3 text-xs text-slate-800 font-medium">{name}</td>
+                    <td className="px-5 py-3 text-xs text-slate-500">{area}</td>
+                    <td className="px-5 py-3 text-xs text-slate-500">{role}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
         {/* Footer note */}
         <p className="mt-12 text-xs text-slate-400 text-center">
-          Documentación generada con TechDocs · Última actualización: Abril 2026
+          Documentación generada con TechDocs · Última actualización: Junio 2026
         </p>
       </div>
     </div>
