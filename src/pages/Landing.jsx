@@ -38,8 +38,8 @@ export default function Landing() {
         <div className="w-6 h-6 rounded-md bg-blue-600 flex items-center justify-center">
           <HiSparkles className="text-white" size={13} />
         </div>
-        <span className="text-sm font-semibold text-slate-700">TechDocs</span>
-        <span className="ml-2 text-[11px] text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full font-mono">v1.0.4</span>
+        <span className="text-sm font-semibold text-slate-700">Documentación</span>
+        <span className="ml-2 text-[11px] text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full font-mono">v1.1.0</span>
       </div>
 
       {/* Hero */}
@@ -129,7 +129,7 @@ export default function Landing() {
 
         {/* Footer note */}
         <p className="mt-12 text-xs text-slate-400 text-center">
-          Documentación generada con TechDocs · Última actualización: Junio 2026
+          Documentación · Última actualización: Junio 2026
         </p>
       </div>
     </div>

@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Landing from '../pages/Landing'
 import DocLayout from '../layouts/DocLayout'
 import PrimerosPasos from '../pages/user/PrimerosPasos'
@@ -16,9 +17,39 @@ import BaseDeDatos from '../pages/tech/BaseDeDatos'
 import Api from '../pages/tech/Api'
 import WIP from '../components/WIP'
 
+/* ──────────────────────────────────────────────
+   Actualiza el título de la pestaña según la ruta
+   ────────────────────────────────────────────── */
+function TitleUpdater() {
+  const location = useLocation()
+
+  useEffect(() => {
+    const path = location.pathname
+
+    if (path === '/') {
+      document.title = 'Documentación | Inicio'
+    } else if (path.startsWith('/usuario')) {
+      const section = path.split('/').filter(Boolean).slice(1).join(' › ')
+      document.title = section
+        ? `Manual de Usuario | ${section}`
+        : 'Manual de Usuario'
+    } else if (path.startsWith('/tecnico')) {
+      const section = path.split('/').filter(Boolean).slice(1).join(' › ')
+      document.title = section
+        ? `Manual Técnico | ${section}`
+        : 'Manual Técnico'
+    } else {
+      document.title = 'Documentación'
+    }
+  }, [location])
+
+  return null
+}
+
 export default function AppRouter() {
   return (
     <BrowserRouter>
+      <TitleUpdater />
       <Routes>
         <Route path="/" element={<Landing />} />
 
