@@ -192,9 +192,13 @@ export default function DiagramaDetalle() {
   }, [config, loadData])
 
   /* ── Módulos ordenados alfabéticamente ── */
-  const sortedData = data && [...data].sort((a, b) =>
-    a.module.localeCompare(b.module, 'es', { sensitivity: 'base' }),
-  )
+  const sortedData = data && [...data].sort((a, b) => {
+    // Módulo "Principal" siempre primero
+    if (a.module === 'Principal') return -1
+    if (b.module === 'Principal') return 1
+    // Resto orden alfabético ABC
+    return a.module.localeCompare(b.module, 'es', { sensitivity: 'base' })
+  })
 
   /* ── Items del menú lateral (solo si hay más de un módulo) ── */
   const navItems =
@@ -319,7 +323,13 @@ export default function DiagramaDetalle() {
 
                 <div className="space-y-8">
                   {[...modulo.images]
-                    .sort((a, b) => (a.orden ?? Infinity) - (b.orden ?? Infinity))
+                    .sort((a, b) => {
+                      // Primero la imagen principal (si existe)
+                      if (a.principal && !b.principal) return -1
+                      if (!a.principal && b.principal) return 1
+                      // Luego por orden numérico
+                      return (a.orden ?? Infinity) - (b.orden ?? Infinity)
+                    })
                     .map((img, iIdx) => {
                       const figura = generarFigura(mIdx, iIdx)
                       return (

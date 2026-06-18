@@ -232,7 +232,13 @@ export default function InterfazModulo() {
       {!loading && !error && data && data.images.length > 0 && (
         <div className="space-y-10">
           {[...data.images]
-            .sort((a, b) => (a.orden ?? Infinity) - (b.orden ?? Infinity))
+            .sort((a, b) => {
+              // Primero la imagen principal (si existe)
+              if (a.principal && !b.principal) return -1
+              if (!a.principal && b.principal) return 1
+              // Luego por orden numérico
+              return (a.orden ?? Infinity) - (b.orden ?? Infinity)
+            })
             .map((img, iIdx) => {
               const figura = `Figura ${iIdx + 1}`
               return (
