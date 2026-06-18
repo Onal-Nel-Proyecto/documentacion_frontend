@@ -88,23 +88,12 @@ export default function Inicio() {
       {/* Architecture Diagram */}
       <section className="mb-10">
         <h2 className="text-2xl text-slate-800 mb-4">Arquitectura General del Sistema</h2>
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
-          <pre className="text-xs text-slate-600 leading-relaxed font-mono">{`Usuarios
-   ↓
-Frontend Web (React)
-   ↓
-API REST (Node.js + Express)
-   ├── Controllers
-   ├── Services
-   ├── Models
-   └── Middlewares
-   ↓
-Base de Datos MySQL
-   ├── Tablas
-   ├── Functions
-   ├── Procedures
-   ├── Views
-   └── Triggers`}</pre>
+        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 flex items-center justify-center">
+          <img
+            src="/arquitectura_software_capas_v2.svg"
+            alt="Arquitectura del sistema por capas"
+            className="w-full h-auto max-w-3xl"
+          />
         </div>
       </section>
 

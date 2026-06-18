@@ -140,13 +140,13 @@ export default function SolucionProblemas() {
                 {modulo.module}
               </h2>
 
-              <div className="space-y-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {[...modulo.images]
                   .sort((a, b) => (a.orden ?? Infinity) - (b.orden ?? Infinity))
                   .map((img, iIdx) => {
                     const figura = `Figura ${mIdx + 1}.${iIdx + 1}`
                     return (
-                      <div key={img.id || `${mIdx}-${iIdx}`}>
+                      <div key={img.id || `${mIdx}-${iIdx}`} className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                         <ProblemImage
                           src={img.url}
                           title={img.title}
@@ -154,10 +154,12 @@ export default function SolucionProblemas() {
                           onClick={() => openLightbox(img.url, `${figura}${img.title ? ` — ${img.title}` : ''}`)}
                         />
 
-                        <p className="text-xs text-slate-400 mt-2 text-center">
-                          {figura}
-                          {img.title ? ` — ${img.title}` : ''}
-                        </p>
+                        <div className="px-3 pb-3 pt-1.5">
+                          <p className="text-xs text-slate-400 text-center">
+                            {figura}
+                            {img.title ? ` — ${img.title}` : ''}
+                          </p>
+                        </div>
                       </div>
                     )
                   })}
