@@ -55,7 +55,7 @@ export default function Interfaz() {
         </span>
         <h1 className="text-4xl text-slate-900 mt-3 mb-2">Interfaz general</h1>
         <p className="text-slate-500 text-base leading-relaxed max-w-2xl">
-          Explore los diferentes módulos de la interfaz del sistema. Seleccione un módulo para ver sus diagramas y descripciones detalladas.
+          Explore los diferentes módulos de la interfaz del sistema. Seleccione un módulo para ver sus vistas y descripciones detalladas.
         </p>
       </div>
 
@@ -81,7 +81,7 @@ export default function Interfaz() {
                   key={slug}
                   icon={TbHierarchy2}
                   title={modulo.module}
-                  description={`${imageCount} ${imageCount === 1 ? 'diagrama' : 'diagramas'} disponible${imageCount === 1 ? '' : 's'}`}
+                  description={`${imageCount} ${imageCount === 1 ? 'vista' : 'vistas'} disponible${imageCount === 1 ? '' : 's'}`}
                   onClick={() => navigate(`/usuario/interfaz/${slug}`)}
                 />
               )
